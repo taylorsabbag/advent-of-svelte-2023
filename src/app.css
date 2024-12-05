@@ -1,3 +1,20 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+body {
+    @apply bg-gray-100;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+main {
+    @apply flex flex-col min-h-full items-center justify-center;
+}
+
+footer {
+    background-color: oklch(27.76% 0.029035928825110448 258.49524808224817);
+    color: white;
+}
