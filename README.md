@@ -11,36 +11,6 @@ A festive collection of solutions for the [Advent of Svelte](https://advent.svel
 - 🧪 Unit testing with Vitest
 - 🎭 Dark mode support
 
-## 🚀 Getting Started
-
-1. Clone this repository:
-```bash
-git clone https://github.com/yourusername/advent-of-svelte-solutions
-cd advent-of-svelte-solutions
-```
-
-2. Install dependencies:
-```bash
-bun install
-```
-
-3. Start the development server:
-```bash
-bun dev --open
-```
-
-## 🎯 Project Structure
-
-```
-src/
-├── lib/
-│   └── solutions/     # Challenge solutions by year
-│       ├── 2023/
-│       └── 2024/
-├── routes/           # SvelteKit routes
-└── app.css          # Global styles
-```
-
 ## 🛠️ Built With
 
 - [Svelte 5](https://svelte.dev)
