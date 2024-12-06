@@ -12,7 +12,10 @@ function parseChallenges(html: string): DayEntry[] {
     const detailsPattern = /<details[^>]*>\s*<summary[^>]*><span[^>]*>Day (\d+) - ([^<]+)<\/span>/g;
     
     let match: RegExpExecArray | null;
-    while ((match = detailsPattern.exec(html)) !== null) {
+    while (true) {
+        match = detailsPattern.exec(html);
+        if (match === null) break;
+        
         const day = Number.parseInt(match[1], 10);
         const title = match[2].trim();
         

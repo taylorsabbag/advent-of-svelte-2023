@@ -2,6 +2,7 @@
 	import "../app.css";
 	import { page } from "$app/stores";
 
+	// biome-ignore lint/style/useConst: <explanation>
 	let { children } = $props();
 	const yearUrl = $derived($page.params.year);
 	const years = Array.from({ length: 2 }, (_, i) => 2023 + i);

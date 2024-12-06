@@ -2,6 +2,13 @@
     import { page } from "$app/stores";
     import { solutions } from "$lib/solutions";
     
+    interface DayEntry {
+        day: number;
+        title: string;
+        content: string;
+    }
+    
+    const { data } = $props<{ data: { days: DayEntry[] } }>();
     const { year, day, title } = $derived($page.params);
     
     const Solution = $derived(() => {
@@ -16,16 +23,16 @@
             .join(" ");
     }
 
-    // Calculate next day link
     const nextDayLink = $derived(() => {
         const nextDay = Number(day) + 1;
         if (nextDay > 24) return null;
         
-        // Get the next day's title from solutions
-        const nextDayTitle = solutions[year]?.[nextDay]?.title?.toLowerCase().replace(/\s+/g, "-") ?? null;
-        if (!nextDayTitle) return null;
+        const nextDayData = data.days.find((d: DayEntry) => d.day === nextDay);
+        if (!nextDayData) return null;
         
-        return `/years/${year}/days/${nextDay}/${nextDayTitle}`;
+        if (!solutions[year]?.[nextDay]) return null;
+        
+        return `/years/${year}/days/${nextDay}/${nextDayData.title}`;
     });
 </script>
 
@@ -36,9 +43,7 @@
     
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         {#if Solution}
-            {#key Solution}
-                {@render Solution()}
-            {/key}
+            <Solution />
         {:else}
             <p class="text-red-600">Solution not found for Day {day} of {year}</p>
         {/if}
@@ -53,7 +58,7 @@
         </a>
         {#if nextDayLink}
             <a 
-                href={nextDayLink}
+                href={nextDayLink()}
                 class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
             >
                 Next Day
