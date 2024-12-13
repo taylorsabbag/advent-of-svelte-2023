@@ -34,6 +34,22 @@ const nextDayLink = $derived(() => {
 
 	return `/years/${year}/days/${nextDay}/${nextDayData.title}`;
 });
+
+const previousDayLink = $derived(() => {
+	const previousDay = Number(day) - 1;
+	if (previousDay < 1) return null;
+
+	if (!data?.days) return null;
+
+	const previousDayData = data.days.find(
+		(d: DayEntry) => d.day === previousDay,
+	);
+	if (!previousDayData) return null;
+
+	if (!solutions[year]?.[previousDay]) return null;
+
+	return `/years/${year}/days/${previousDay}/${previousDayData.title}`;
+});
 </script>
 
 <article class="container mx-auto py-12 px-4">
@@ -42,6 +58,14 @@ const nextDayLink = $derived(() => {
             Day {day} - {formatTitle(title)}
         </h1>
         <div class="flex justify-center items-center gap-4">
+            {#if previousDayLink()}
+            <a 
+            href={previousDayLink()}
+            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+            >
+            Previous Day
+            </a>
+            {/if}
             <a 
             href={`/years/${year}`} 
             class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
