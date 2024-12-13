@@ -42,7 +42,7 @@
                 </summary>
                 
                 <div class="p-4 mt-2 rounded-lg shadow-xl bg-white">
-                    <div class="prose prose-sm max-w-none">
+                    <div class="max-w-none prose prose-gray [&_*]:text-gray-900">
                         {@html day.content}
                     </div>
                 </div>
