@@ -21,7 +21,13 @@ function parseChallenges(html: string): DayEntry[] {
         
         const bodyStart = html.indexOf('<div class="text-left', match.index);
         const bodyEnd = html.indexOf('</div>', bodyStart);
-        const content = html.slice(bodyStart, bodyEnd + 6);
+        let content = html.slice(bodyStart, bodyEnd + 6);
+        
+        if (day === 7) {
+            content = content.replace(/<audio[^>]*>.*?<\/audio>/g, "")
+                           .replace(/<p[^>]*>\s*<\/p>/g, "")
+                           .replace(/Listen to the audio file:/g, "");
+        }
         
         challenges.push({
             day,
