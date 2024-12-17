@@ -1,7 +1,6 @@
 <script lang="ts">
 import { page } from "$app/stores";
-import { getSolution } from "$lib/solutions";
-import { solutions } from "$lib/solutions";
+import { getSolution, solutions } from "$lib/solutions";
 
 interface DayEntry {
 	day: number;
