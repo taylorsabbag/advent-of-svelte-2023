@@ -1,63 +1,65 @@
 <script lang="ts">
-let data = $state([]);
-$effect(() => {
-	const getChildrenData = async () => {
-		const response = await fetch(
-			"https://advent.sveltesociety.dev/data/2023/day-one.json",
-		);
-		data = await response.json();
-	};
+    // TODO: Add pagination
+    
+    let data = $state([]);
+    $effect(() => {
+        const getChildrenData = async () => {
+            const response = await fetch(
+                "https://advent.sveltesociety.dev/data/2023/day-one.json",
+            );
+            data = await response.json();
+        };
 
-	void getChildrenData();
-});
+        void getChildrenData();
+    });
 
-let search = $state("");
-let filteredData = $derived(
-	data.filter(
-		(item) =>
-			item.name.toLowerCase().includes(search.toLowerCase()) &&
-			(filter === "naughty" ? isNaughty(item.tally) : true) &&
-			(filter === "nice" ? !isNaughty(item.tally) : true),
-	),
-);
+    let search = $state("");
+    let filteredData = $derived(
+        data.filter(
+            (item) =>
+                item.name.toLowerCase().includes(search.toLowerCase()) &&
+                (filter === "naughty" ? isNaughty(item.tally) : true) &&
+                (filter === "nice" ? !isNaughty(item.tally) : true),
+        ),
+    );
 
-let filter = $state("all");
+    let filter = $state("all");
 
-let sortOn = $state({
-	current: "name",
-	name: {
-		direction: "asc",
-	},
-	tally: {
-		direction: "asc",
-	},
-});
-let sortedData = $derived(
-	[...filteredData].sort((a, b) => {
-		if (sortOn.current === "name") {
-			return sortOn.name.direction === "asc"
-				? a.name.localeCompare(b.name)
-				: b.name.localeCompare(a.name);
-		}
-		if (sortOn.current === "tally") {
-			return sortOn.tally.direction === "asc"
-				? a.tally - b.tally
-				: b.tally - a.tally;
-		}
-		return 0;
-	}),
-);
+    let sortOn = $state({
+        current: "name",
+        name: {
+            direction: "asc",
+        },
+        tally: {
+            direction: "asc",
+        },
+    });
+    let sortedData = $derived(
+        [...filteredData].sort((a, b) => {
+            if (sortOn.current === "name") {
+                return sortOn.name.direction === "asc"
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
+            }
+            if (sortOn.current === "tally") {
+                return sortOn.tally.direction === "asc"
+                    ? a.tally - b.tally
+                    : b.tally - a.tally;
+            }
+            return 0;
+        }),
+    );
 
-const isNaughty = (tally: number) => {
-	return tally < 1;
-};
+    const isNaughty = (tally: number) => {
+        return tally < 1;
+    };
 
-const changeTally = (name: string, change: number) => {
-	const item = data.find((item) => item.name === name);
-	if (item) {
-		item.tally += change;
-	}
-};
+    const changeTally = (name: string, change: number) => {
+        const item = data.find((item) => item.name === name);
+        if (item) {
+            item.tally += change;
+        }
+    };
 </script>
 
 <div class="min-h-screen p-8 bg-gradient-to-br from-gray-900 to-gray-800">
