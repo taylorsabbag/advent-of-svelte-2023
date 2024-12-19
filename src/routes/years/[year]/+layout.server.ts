@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { LayoutServerLoad } from "./$types";
 
 interface DayEntry {
     day: number;
@@ -73,4 +73,4 @@ export const load = (async ({ params, fetch }) => {
         console.error("Error loading challenges:", err);
         throw error(500, "Failed to load challenges");
     }
-}) satisfies PageServerLoad; 
+}) satisfies LayoutServerLoad; 

@@ -1,7 +1,12 @@
 <script lang="ts">
     // TODO: Add pagination
     
-    let data = $state([]);
+    interface Child {
+        name: string;
+        tally: number;
+    }
+
+    let data = $state<Child[]>([]);
     $effect(() => {
         const getChildrenData = async () => {
             const response = await fetch(

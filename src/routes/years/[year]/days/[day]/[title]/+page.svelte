@@ -1,54 +1,60 @@
 <script lang="ts">
-import { page } from "$app/stores";
-import { getSolution, solutions } from "$lib/solutions";
+    import { page } from "$app/state";
+    import { getSolution, solutions } from "$lib/solutions";
+    import type { SvelteComponent } from "svelte";
 
-interface DayEntry {
-	day: number;
-	title: string;
-	content: string;
-}
+    interface DayEntry {
+        day: number;
+        title: string;
+        content: string;
+    }
 
-const { data } = $props<{ data: { days: DayEntry[] } }>();
-const { year, day, title } = $derived($page.params);
+    const { data } = $props<{ data: { days: DayEntry[] } }>();
+    const { year, day, title } = $derived(page.params);
 
-const Solution = $derived(getSolution(year, Number(day)));
+    interface SolutionProps {
+        year: string;
+        day: number;
+    }
 
-function formatTitle(title: string): string {
-	return title
-		.split("-")
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(" ");
-}
+    const Solution: typeof SvelteComponent<SolutionProps> = $derived(getSolution(year, Number(day)));
 
-const nextDayLink = $derived(() => {
-	const nextDay = Number(day) + 1;
-	if (nextDay > 24) return null;
+    function formatTitle(title: string): string {
+        return title
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
 
-	if (!data?.days) return null;
+    const nextDayLink = $derived(() => {
+        const nextDay = Number(day) + 1;
+        if (nextDay > 24) return null;
 
-	const nextDayData = data.days.find((d: DayEntry) => d.day === nextDay);
-	if (!nextDayData) return null;
+        if (!data?.days) return null;
 
-	if (!solutions[year]?.[nextDay]) return null;
+        const nextDayData = data.days.find((d: DayEntry) => d.day === nextDay);
+        if (!nextDayData) return null;
 
-	return `/years/${year}/days/${nextDay}/${nextDayData.title}`;
-});
+        if (!solutions[year]?.[nextDay]) return null;
 
-const previousDayLink = $derived(() => {
-	const previousDay = Number(day) - 1;
-	if (previousDay < 1) return null;
+        return `/years/${year}/days/${nextDay}/${nextDayData.title}`;
+    });
 
-	if (!data?.days) return null;
+    const previousDayLink = $derived(() => {
+        const previousDay = Number(day) - 1;
+        if (previousDay < 1) return null;
 
-	const previousDayData = data.days.find(
-		(d: DayEntry) => d.day === previousDay,
-	);
-	if (!previousDayData) return null;
+        if (!data?.days) return null;
 
-	if (!solutions[year]?.[previousDay]) return null;
+        const previousDayData = data.days.find(
+            (d: DayEntry) => d.day === previousDay,
+        );
+        if (!previousDayData) return null;
 
-	return `/years/${year}/days/${previousDay}/${previousDayData.title}`;
-});
+        if (!solutions[year]?.[previousDay]) return null;
+
+        return `/years/${year}/days/${previousDay}/${previousDayData.title}`;
+    });
 </script>
 
 <article class="container mx-auto py-12 px-4">
@@ -84,7 +90,7 @@ const previousDayLink = $derived(() => {
     
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         {#if Solution}
-            <Solution {year} day={Number(day)} />
+            <Solution year={year.toString()} day={Number(day)} />
         {:else}
             <p class="text-red-600">Solution not found for Day {day} of {year}</p>
         {/if}
