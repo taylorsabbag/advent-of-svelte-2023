@@ -1,7 +1,6 @@
 <script lang="ts">
     import { page } from "$app/state";
     import { getSolution, solutions } from "$lib/solutions";
-    import type { SvelteComponent } from "svelte";
 
     interface DayEntry {
         day: number;
@@ -12,12 +11,7 @@
     const { data } = $props<{ data: { days: DayEntry[] } }>();
     const { year, day, title } = $derived(page.params);
 
-    interface SolutionProps {
-        year: string;
-        day: number;
-    }
-
-    const Solution: typeof SvelteComponent<SolutionProps> = $derived(getSolution(year, Number(day)));
+    const Solution = $derived(getSolution(year, Number(day)));
 
     function formatTitle(title: string): string {
         return title
@@ -90,7 +84,7 @@
     
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         {#if Solution}
-            <Solution year={year.toString()} day={Number(day)} />
+            <Solution {year} day={Number(day)} />
         {:else}
             <p class="text-red-600">Solution not found for Day {day} of {year}</p>
         {/if}
